@@ -50,6 +50,7 @@ RCT_EXPORT_METHOD(start) {
 RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve
                   rejecter:(__unused RCTPromiseRejectBlock)reject) {
     RCTLogInfo(@"stop");
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     if (_recordState.mIsRunning) {
         _recordState.mIsRunning = false;
         AudioQueueStop(_recordState.mQueue, true);
