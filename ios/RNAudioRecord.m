@@ -39,7 +39,7 @@ RCT_EXPORT_METHOD(start) {
     AudioFileCreateWithURL(url, kAudioFileWAVEType, &_recordState.mDataFormat, kAudioFileFlags_EraseFile, &_recordState.mAudioFile);
     CFRelease(url);
     
-    AudioQueueNewInput(&_recordState.mDataFormat, HandleInputBuffer, &_recordState, NULL, NULL, 0, &_recordState.mQueue);
+    AudioQueueNewInput(&_recordState.mDataFormat, MyHandleInputBuffer, &_recordState, NULL, NULL, 0, &_recordState.mQueue);
     for (int i = 0; i < kNumberBuffers; i++) {
         AudioQueueAllocateBuffer(_recordState.mQueue, _recordState.bufferByteSize, &_recordState.mBuffers[i]);
         AudioQueueEnqueueBuffer(_recordState.mQueue, _recordState.mBuffers[i], 0, NULL);
@@ -63,7 +63,7 @@ RCT_EXPORT_METHOD(stop:(RCTPromiseResolveBlock)resolve
     RCTLogInfo(@"file size %llu", fileSize);
 }
 
-void HandleInputBuffer(void *inUserData,
+void MyHandleInputBuffer(void *inUserData,
                        AudioQueueRef inAQ,
                        AudioQueueBufferRef inBuffer,
                        const AudioTimeStamp *inStartTime,
